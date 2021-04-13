@@ -12,6 +12,7 @@ from keras import models
 from keras import optimizers
 from keras.preprocessing.image import ImageDataGenerator
 import pathlib
+import matplotlib.pyplot as plt
 
 def setup_data():
     cur = pathlib.Path("Project3.py").parent.absolute()
@@ -19,29 +20,35 @@ def setup_data():
     dat = os.path.join(cur, "train")
 
     train_dir = os.path.join(cur, "TrainingSet")
-    shutil.rmtree(train_dir)
-    os.mkdir(train_dir)
+    try:
+        shutil.rmtree(train_dir)
+    except:
+        os.makedirs(train_dir)
     test_dir = os.path.join(cur, "TestingSet")
-    shutil.rmtree(test_dir)
-    os.mkdir(test_dir)
+    try:
+        shutil.rmtree(test_dir)
+    except:
+        os.makedirs(test_dir)
     val_dir = os.path.join(cur, "ValidationSet")
-    shutil.rmtree(val_dir)
-    os.mkdir(val_dir)
+    try:
+        shutil.rmtree(val_dir)
+    except:
+        os.makedirs(val_dir)
 
     train_cat = os.path.join(train_dir, "Cat")
-    os.mkdir(train_cat)
+    os.makedirs(train_cat)
     train_dog = os.path.join(train_dir, "Dog")
-    os.mkdir(train_dog)
+    os.makedirs(train_dog)
 
     test_cat = os.path.join(test_dir, "Cat")
-    os.mkdir(test_cat)
+    os.makedirs(test_cat)
     test_dog = os.path.join(test_dir, "Dog")
-    os.mkdir(test_dog)
+    os.makedirs(test_dog)
 
     val_cat = os.path.join(val_dir, "Cat")
-    os.mkdir(val_cat)
+    os.makedirs(val_cat)
     val_dog = os.path.join(val_dir, "Dog")
-    os.mkdir(val_dog)
+    os.makedirs(val_dog)
 
     train_im_dog = random.sample(range(0, 12500), 1000)
     test_im_dog = []
@@ -54,7 +61,7 @@ def setup_data():
         n = random.randint(0, 12499)
         if n not in train_im_dog and n not in test_im_dog and n not in val_im_dog:
             val_im_dog.append(n)
-        
+
     train_im_cat = random.sample(range(0, 12500), 1000)
     test_im_cat = []
     val_im_cat = []
@@ -66,19 +73,19 @@ def setup_data():
         n = random.randint(0, 12499)
         if n not in train_im_cat and n not in test_im_cat and n not in val_im_cat:
             val_im_cat.append(n)
-        
+
     dog_names = ["dog.{}.jpg".format(i) for i in train_im_dog]
     for _ in dog_names:
         src = os.path.join(dat, _)
         dst = os.path.join(train_dog, _)
         shutil.copy(src, dst)
-    
+
     dog_names = ["dog.{}.jpg".format(i) for i in test_im_dog]
     for _ in dog_names:
         src = os.path.join(dat, _)
         dst = os.path.join(test_dog, _)
         shutil.copy(src, dst)
-    
+
     dog_names = ["dog.{}.jpg".format(i) for i in val_im_dog]
     for _ in dog_names:
         src = os.path.join(dat, _)
@@ -90,7 +97,7 @@ def setup_data():
         src = os.path.join(dat, _)
         dst = os.path.join(train_cat, _)
         shutil.copy(src, dst)
-    
+
     cat_names = ["cat.{}.jpg".format(i) for i in test_im_cat]
     for _ in cat_names:
         src = os.path.join(dat, _)
@@ -103,7 +110,7 @@ def setup_data():
         dst = os.path.join(val_cat, _)
         shutil.copy(src, dst)
     return train_dir, val_dir
-    
+
 train_dir, val_dir = setup_data()
 
 
@@ -152,3 +159,24 @@ history = model.fit_generator(
       validation_steps=50)
 
 model.save('cats_and_dogs_small_1.h5')
+
+acc = model.history['acc']
+val_acc = model.history['val_acc']
+loss = model.history['loss']
+val_loss = model.history['val_loss']
+
+epochs = range(len(acc))
+
+plt.plot(epochs, acc, 'bo', label='Training acc')
+plt.plot(epochs, val_acc, 'b', label='Validation acc')
+plt.title('Training and validation accuracy')
+plt.legend()
+
+plt.figure()
+
+plt.plot(epochs, loss, 'bo', label='Training loss')
+plt.plot(epochs, val_loss, 'b', label='Validation loss')
+plt.title('Training and validation loss')
+plt.legend()
+
+plt.show()
