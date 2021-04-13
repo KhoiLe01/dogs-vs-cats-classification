@@ -160,10 +160,10 @@ history = model.fit_generator(
 
 model.save('cats_and_dogs_small_1.h5')
 
-acc = model.history['acc']
-val_acc = model.history['val_acc']
-loss = model.history['loss']
-val_loss = model.history['val_loss']
+acc = history.history['acc']
+val_acc = history.history['val_acc']
+loss = history.history['loss']
+val_loss = history.history['val_loss']
 
 epochs = range(len(acc))
 
