@@ -57,27 +57,27 @@ def setup_data():
     val_dog = os.path.join(val_dir, "Dog")
     os.makedirs(val_dog)
 
-    train_im_dog = random.sample(range(0, 5002), 1000)
+    train_im_dog = random.sample(range(0, 5001), 1000)
     test_im_dog = []
     val_im_dog = []
     while len(test_im_dog) < 500:
-        n = random.randint(0, 5001)
+        n = random.randint(0, 5000)
         if n not in train_im_dog and n not in test_im_dog:
             test_im_dog.append(n)
     while len(val_im_dog) < 500:
-        n = random.randint(0, 5001)
+        n = random.randint(0, 5000)
         if n not in train_im_dog and n not in test_im_dog and n not in val_im_dog:
             val_im_dog.append(n)
 
-    train_im_cat = random.sample(range(0, 5002), 1000)
+    train_im_cat = random.sample(range(0, 5001), 1000)
     test_im_cat = []
     val_im_cat = []
     while len(test_im_cat) < 500:
-        n = random.randint(0, 5001)
+        n = random.randint(0, 5000)
         if n not in train_im_cat and n not in test_im_cat:
             test_im_cat.append(n)
     while len(val_im_cat) < 500:
-        n = random.randint(0, 5001)
+        n = random.randint(0, 5000)
         if n not in train_im_cat and n not in test_im_cat and n not in val_im_cat:
             val_im_cat.append(n)
 
